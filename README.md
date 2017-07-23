@@ -13,3 +13,8 @@ This script require:
 
 Tips:
   - Use PythonAnyWhere for hosting the bot https://www.pythonanywhere.com
+
+
+
+## TODO
+  - split videos bigger than 50MB in videos little than 50MB (bots can not upload file bigger than 50MB)

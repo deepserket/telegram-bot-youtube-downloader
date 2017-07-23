@@ -17,4 +17,4 @@ Tips:
 
 
 ## TODO
-  - split videos bigger than 50MB in videos little than 50MB (bots can not upload file bigger than 50MB)
+  - split videos larger than 50MB in videos smaller than 50MB (bots can not upload file larger than 50MB)

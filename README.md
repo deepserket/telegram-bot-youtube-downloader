@@ -5,6 +5,8 @@ Change TOKEN with your token
 Usage:
   - Send link of video (@vid inline is comfortable)
   - The bot will download the video and send it
+      - If the video is larger than 50MB, it is split into smaller parts, 
+      - which then need to be concatenated (in linux: cat vid.mp4* > vid.mp4)
 
 This script require:
   - Python3 interpreter
@@ -17,4 +19,5 @@ Tips:
 
 
 ## TODO
-  - split videos larger than 50MB in videos smaller than 50MB (bots can not upload file larger than 50MB)
+  - Improve soft-split of the videos
+  - Add the choice of resolution

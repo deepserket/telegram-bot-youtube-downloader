@@ -4,6 +4,7 @@ from glob import glob
 
 import youtube_dl
 from telegram.ext import Updater, MessageHandler, Filters
+
 from vid_utils import check_dimension
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)

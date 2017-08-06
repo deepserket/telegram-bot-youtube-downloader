@@ -6,7 +6,7 @@ Usage:
   - Send link of video (@vid inline is comfortable)
   - The bot will download the video and send it
       - If the video is larger than 50MB, it is split into smaller parts, 
-      - which then need to be concatenated (in linux: cat vid.mp4* > vid.mp4)
+        which then need to be concatenated (in linux: cat vid.mp4* > vid.mp4)
 
 This script require:
   - Python3 interpreter

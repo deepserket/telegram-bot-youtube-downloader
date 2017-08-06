@@ -21,3 +21,4 @@ Tips:
 ## TODO
   - Improve soft-split of the videos
   - Add the choice of resolution
+  - Add a queue to manage multiple users

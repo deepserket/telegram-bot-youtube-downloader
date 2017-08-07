@@ -9,7 +9,7 @@ from time import strftime, strptime
 def check_dimension(f):
     """ If f is larger than 50MB it divides it into files up to 45MB """
     if os.path.getsize(f) > 50 * 1024 * 1023:
-        os.system("split -b 45MB {0} {1}".format(f, f))
+        os.system('split -b 49MB "{0}" "{1}"'.format(f, f))
         os.remove(f)
 
 

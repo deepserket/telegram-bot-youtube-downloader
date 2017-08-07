@@ -11,7 +11,7 @@ Usage:
 This script require:
   - Python3 interpreter
   - Telegram python api https://github.com/python-telegram-bot/python-telegram-bot
-  - youtube-dl https://github.com/rg3/youtube-dl/
+  - youtube-dl https://github.com/rg3/youtube-dl/ (installed on the machine)
 
 Tips:
   - Use PythonAnyWhere for hosting the bot https://www.pythonanywhere.com
@@ -19,6 +19,8 @@ Tips:
 
 
 ## TODO
+  - Improve space-requirement of hard-split (is 2 times size_of_video, the goal is size_of_video + 49MB)
   - Improve soft-split of the videos
-  - Add the choice of resolution
+  - PEP8
   - Add a queue to manage multiple users
+  - Remove duplicates of resolution

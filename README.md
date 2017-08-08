@@ -24,3 +24,11 @@ Tips:
   - PEP8
   - Add a queue to manage multiple users
   - Remove duplicates of resolution
+  - Add geo-bypass feature
+  - Add playlist download feature
+    - match title with regex
+    - from video x to video y
+    - only video uploaded before or after date x
+    - max-views or min-views
+  - Subtitle download
+  

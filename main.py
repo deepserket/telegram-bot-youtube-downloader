@@ -50,8 +50,10 @@ def get_format(bot, update):
         while True: # save the formats in the formats list
             try:
                 line = next(it)
-                if not line: # the last line is empty...
+                if not line: # the last line usually is empty...
                     raise StopIteration
+                if "video only" in line: # video without audio... why?
+                    continue
             except StopIteration:
                 break
             else:

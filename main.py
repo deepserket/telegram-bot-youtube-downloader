@@ -22,12 +22,11 @@ def get_format(bot, update):
 
 def download_choosen_format(bot, update):
     query = update.callback_query
-
-    video.download(query.data)
     bot.edit_message_text(text="Downloading...",
                           chat_id=query.message.chat_id,
                           message_id=query.message.message_id)
-
+    video.download(query.data)
+    
     with video.send() as files:
         for f in files:
             bot.send_document(chat_id=query.message.chat_id, document=open(f, 'rb'))

@@ -1,23 +1,28 @@
 import logging
+from time import sleep
 
 from telegram import InlineKeyboardMarkup
 from telegram.ext import Updater, CallbackQueryHandler, MessageHandler, Filters
 
-from vid_utils import Video
+from vid_utils import Video, VideoQueue, BadLink
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-video = None
+VIDEOS = VideoQueue()
 
 def get_format(bot, update):
-    logger.info(update.message.text) # "history"
-    global video
-    video = Video(update.message.text, update.message.chat_id)
+    logger.info("from {}: {}".format(update.message.chat_id, update.message.text)) # "history"
 
-    reply_markup = InlineKeyboardMarkup(video.keyboard)
-    update.message.reply_text('Choose format:', reply_markup=reply_markup)
+    try:
+        video = Video(update.message.text, update.message.chat_id)
+    except BadLink:
+        update.message.reply_text("Bad link")
+    else:
+        reply_markup = InlineKeyboardMarkup(video.keyboard)
+        VIDEOS.append(video)
+        update.message.reply_text('Choose format:', reply_markup=reply_markup)
 
 
 def download_choosen_format(bot, update):
@@ -25,11 +30,21 @@ def download_choosen_format(bot, update):
     bot.edit_message_text(text="Downloading...",
                           chat_id=query.message.chat_id,
                           message_id=query.message.message_id)
-    video.download(query.data)
-    
+
+    while VIDEOS.lock: sleep(1) # finish old download
+
+    VIDEOS.lock = True # maybe we can use a contextmanager?
+
+    for i, video in enumerate(VIDEOS):
+        if video.chat_id == query.message.chat_id:
+            VIDEOS.pop(i)
+            video.download(query.data)
+
     with video.send() as files:
         for f in files:
             bot.send_document(chat_id=query.message.chat_id, document=open(f, 'rb'))
+
+    VIDEOS.lock = False
 
 
 updater = Updater(token=YOUR_TOKEN)

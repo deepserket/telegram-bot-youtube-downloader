@@ -6,7 +6,15 @@ from time import strftime, strptime, sleep
 from contextlib import contextmanager
 
 from telegram import InlineKeyboardButton
-# many of these imports serve the commented code...
+
+class BadLink(Exception):
+    pass
+
+
+class VideoQueue(list): # I want just the "lock" attribute
+    def __init__(self):
+        self.lock = False
+
 
 class Video:
     def __init__(self, link, chat_id):
@@ -23,7 +31,10 @@ class Video:
         p = Popen(cmd, shell=True, stdout=PIPE, stderr=PIPE).communicate()
         it = iter(str(p[0], 'utf-8').split('\n')) # iterator of output lines
 
-        while "code  extension" not in next(it): pass # Remove garbage lines
+        try:
+            while "code  extension" not in next(it): pass # Remove garbage lines
+        except StopIteration:
+            raise BadLink # Isn't a valid youtube link
 
         while True:
             try:

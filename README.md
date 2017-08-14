@@ -22,7 +22,6 @@ Tips:
   - Improve space-requirement of hard-split (is 2 times size_of_video, the goal is size_of_video + 49MB)
   - Improve soft-split of the videos
   - PEP8
-  - Add a queue to manage multiple users
   - Remove duplicates of resolution
   - Add geo-bypass feature
   - Add playlist download feature
@@ -31,4 +30,3 @@ Tips:
     - only video uploaded before or after date x
     - max-views or min-views
   - Subtitle download
-  

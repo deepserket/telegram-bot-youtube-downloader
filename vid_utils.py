@@ -11,20 +11,16 @@ class BadLink(Exception):
     pass
 
 
-class VideoQueue(list): # I want just the "lock" attribute
-    def __init__(self):
-        self.lock = False
-
-
 class Video:
-    def __init__(self, link, chat_id):
+    def __init__(self, link, init_keyboard=False):
         self.link = link
-        self.chat_id = chat_id
-        self.formats = self.get_formats()
-        self.keyboard = self.generate_keyboard()
         self.file_name = None
+        
+        if init_keyboard:
+            self.formats = self.get_formats()
+            self.keyboard = self.generate_keyboard()
 
-    def get_formats(self, link=None):
+    def get_formats(self):
         formats = []
 
         cmd = "youtube-dl -F {}".format(self.link)
@@ -56,7 +52,7 @@ class Video:
 
         for code, extension, resolution in self.formats:
             kb.append([InlineKeyboardButton("{0}, {1}".format(extension, resolution),
-                                               callback_data=code)])
+                                     callback_data="{} {}".format(code, self.link))]) # maybe callback_data can support a list or tuple?
         return kb
 
     def download(self, resolution_code):

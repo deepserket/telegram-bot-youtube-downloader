@@ -20,8 +20,14 @@ def get_format(bot, update):
     except BadLink:
         update.message.reply_text("Bad link")
     else:
+        for i, v in enumerate(VIDEOS):
+            if v.chat_id == video.chat_id:
+                VIDEOS[i] = video # remove old video not downloaded...
+                break
+        else:
+            VIDEOS.append(video)
+        
         reply_markup = InlineKeyboardMarkup(video.keyboard)
-        VIDEOS.append(video)
         update.message.reply_text('Choose format:', reply_markup=reply_markup)
 
 

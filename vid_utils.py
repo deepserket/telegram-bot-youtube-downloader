@@ -57,14 +57,14 @@ class Video:
 
     def download(self, resolution_code):
         cmd = "youtube-dl -f {0} {1}".format(resolution_code, self.link)
-        p = Popen(cmd, shell=True, stdout=PIPE, stderr=PIPE).communicate()
+        p = Popen(cmd, shell=True, stdout=PIPE, stderr=PIPE).communicate()#cmd is a array type
 
         for line in str(p[0], 'utf-8').split('\n'):
             if "[download] Destination:" in line:
                 self.file_name = line[24:] # name of the file
 
     def check_dimension(self):
-        if os.path.getsize(self.file_name) > 50 * 1024 * 1023:
+        if os.path.getsize(self.file_name) > 50 * 1024 * 1023:# big than 50mb
             os.system('split -b 49M "{0}" "{1}"'.format(self.file_name, self.file_name))
             os.remove(self.file_name)
         return glob(escape(self.file_name) + '*')

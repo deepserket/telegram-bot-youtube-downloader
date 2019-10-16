@@ -5,11 +5,15 @@ from telegram.ext import Updater, CallbackQueryHandler, MessageHandler, Filters
 
 from vid_utils import Video, BadLink
 
+updater = Updater(token='615730838:AAE63t-p8V6V7a7cev43iQc3NwrJNoWfAF4', use_context=True)
+
+dispatcher = updater.dispatcher
+
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-def get_format(bot, update):
+def get_format(update, context):
     logger.info("from {}: {}".format(update.message.chat_id, update.message.text)) # "history"
 
     try:
@@ -21,11 +25,11 @@ def get_format(bot, update):
         update.message.reply_text('Choose format:', reply_markup=reply_markup)
 
 
-def download_choosen_format(bot, update):
+def download_choosen_format(update, context):
     query = update.callback_query
     resolution_code, link = query.data.split(' ', 1)
     
-    bot.edit_message_text(text="Downloading...",
+    context.bot.edit_message_text(text="Downloading...",
                           chat_id=query.message.chat_id,
                           message_id=query.message.message_id)
     
@@ -34,14 +38,11 @@ def download_choosen_format(bot, update):
     
     with video.send() as files:
         for f in files:
-            bot.send_document(chat_id=query.message.chat_id, document=open(f, 'rb'))
+            context.bot.send_document(chat_id=query.message.chat_id, document=open(f, 'rb'))
 
 
-updater = Updater(token=YOUR_TOKEN)
-
-updater.dispatcher.add_handler(MessageHandler(Filters.text, get_format))
-updater.dispatcher.add_handler(CallbackQueryHandler(download_choosen_format))
-
+dispatcher.add_handler(MessageHandler(Filters.text, get_format))
+dispatcher.add_handler(CallbackQueryHandler(download_choosen_format))
 
 updater.start_polling()
 updater.idle()

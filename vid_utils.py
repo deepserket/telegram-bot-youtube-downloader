@@ -83,8 +83,15 @@ class Video:
     def send(self):
         files = self.check_dimension() # split if size >= 50MB
         yield files
-        for f in files: #removing old files
-            os.remove(f)
+
+    def remove(self, file=None):
+        files = self.check_dimension()
+        if files == None:
+            for f in files: #removing old files
+                os.remove(f)
+        else:
+            os.remove(file)
+
 
 
 

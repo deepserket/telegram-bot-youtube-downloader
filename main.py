@@ -1,4 +1,5 @@
 import logging
+import os
 
 from telegram import InlineKeyboardMarkup
 from telegram.ext import Updater, CallbackQueryHandler, MessageHandler, Filters
@@ -38,7 +39,12 @@ def download_choosen_format(update, context):
     
     with video.send() as files:
         for f in files:
-            context.bot.send_document(chat_id=query.message.chat_id, document=open(f, 'rb'))#open with binary file and send data
+            try:
+                context.bot.send_document(chat_id=query.message.chat_id, document=open(f, 'rb'))#open with binary file and send data
+            except :
+                update.message.reply_text("tansfer error")
+                for f in files: #removing old files
+                    os.remove(f)
 
 
 dispatcher.add_handler(MessageHandler(Filters.text, get_format))

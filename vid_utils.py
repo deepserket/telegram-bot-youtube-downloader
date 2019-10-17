@@ -15,7 +15,8 @@ class Video:
     def __init__(self, link, init_keyboard=False):
         self.link = link
         self.file_name = None
-        
+        self.real_file_name = None
+
         if init_keyboard:
             self.formats = self.get_formats()
             self.keyboard = self.generate_keyboard()
@@ -74,20 +75,20 @@ class Video:
                 self.file_name = line[11:-28]
 
     def check_dimension(self):
-        realfilename = file_name.split('.')[0]
-        extension = '.' + file_name.split('.')[-1]# last matched
+        self.real_file_name = self.file_name.split('.')[0]
+        extension = '.' + self.file_name.split('.')[-1]# last matched
         if os.path.getsize(self.file_name) > 50 * 1024 * 1023:# big than 50mb
-            os.system('split -b 49M "{0}" "{1}"'.format(self.file_name, realfilename))
+            os.system('split -b 49M "{0}" "{1}"'.format(self.file_name, self.real_file_name))
             #os.system() run real command in your machine
 
             os.remove(self.file_name)#remove orignal file
 
-            files = glob.glob(realfilename + '*')
+            files = glob.glob(self.real_file_name + '*')
             for file in files:
                 cmd = 'mv ' + file + ' ' + file + extension
                 os.system(cmd)
 
-        return glob.glob(realfilename + '*')# return files match in glob.glob('')
+        return glob.glob(self.real_file_name + '*')# return files match in glob.glob('')
 
     @contextmanager #run this function with new defined send function
     def send(self):
@@ -95,6 +96,6 @@ class Video:
         yield files
 
     def remove(self):
-        files = glob.glob(self.file_name + '*')
+        files = glob.glob(self.real_file_name + '*')
         for f in files: #removing old files
             os.remove(f)

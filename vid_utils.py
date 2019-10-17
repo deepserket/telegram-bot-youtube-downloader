@@ -70,6 +70,9 @@ class Video:
         for line in str(p[0], 'utf-8').split('\n'):
             if "[download] Destination:" in line:
                 self.file_name = line[24:] # name of the file
+            elif "has already been downloaded" in line:
+                self.file_name = line[11:]
+                self.file_name.replace(' has already been downloaded','')
 
     def check_dimension(self):
         if os.path.getsize(self.file_name) > 50 * 1024 * 1023:# big than 50mb
@@ -85,7 +88,7 @@ class Video:
         yield files
 
     def remove(self):
-        files = self.check_dimension()
+        files = glob.glob(self.file_name + '*')
         for f in files: #removing old files
             os.remove(f)
 

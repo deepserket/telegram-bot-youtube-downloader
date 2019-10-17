@@ -41,9 +41,9 @@ def download_choosen_format(update, context):
             try:
                 context.bot.send_document(chat_id=query.message.chat_id, document=open(f, 'rb'))#open with binary file and send data
             except TimeoutError :
-                update.message.reply_text("Tansfer timeout, place try again later")
+                context.bot.send_message(chat_id=update.effective_chat.id, text="Tansfer timeout, place try again later")
                 video.remove()
-        update.message.reply_text("Finished")
+        context.bot.send_message(chat_id=update.effective_chat.id, text="Finished")
         video.remove()
 
 dispatcher.add_handler(MessageHandler(Filters.text, get_format))

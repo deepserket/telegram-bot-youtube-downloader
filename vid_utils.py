@@ -84,15 +84,10 @@ class Video:
         files = self.check_dimension() # split if size >= 50MB
         yield files
 
-    def remove(self, file=None):
+    def remove(self):
         files = self.check_dimension()
-        if files == None:
-            for f in files: #removing old files
-                os.remove(f)
-        else:
-            os.remove(file)
-
-
+        for f in files: #removing old files
+            os.remove(f)
 
 
 

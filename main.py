@@ -41,8 +41,8 @@ def download_choosen_format(update, context):
         for f in files:
             try:
                 context.bot.send_document(chat_id=query.message.chat_id, document=open(f, 'rb'))#open with binary file and send data
-            except :
-                update.message.reply_text("tansfer error")
+            except TimeoutError :
+                update.message.reply_text("tansfer timeout")
                 for f in files: #removing old files
                     os.remove(f)
 

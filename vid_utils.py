@@ -78,16 +78,16 @@ class Video:
         self.real_file_name = self.file_name.split('.')[0]
         extension = '.' + self.file_name.split('.')[-1]# last matched
         if os.path.getsize(self.file_name) > 50 * 1024 * 1023:# big than 50mb
-            os.system('split -b 49M "{0}" "{1}"'.format(self.file_name, self.real_file_name))
+            os.system('split -b 49M "{0}" "{1}"'.format(self.file_name, self.real_file_name + '_'))
             #os.system() run real command in your machine
 
             os.remove(self.file_name)#remove orignal file
 
             files = glob.glob(self.real_file_name + '*')
             for file in files:
-                file = file.replace(' ','\ ')
-                file = file.replace('!','\!')
-                cmd = 'mv ' + file + ' ' + file + extension
+                nfile = '"' + file + '"'
+                nfile_ext = '"' + file + extension + '"'
+                cmd = 'mv ' + nfile + ' ' + nfile_ext
                 os.system(cmd)
 
         return glob.glob(self.real_file_name + '*')# return files match in glob.glob('')

@@ -73,7 +73,7 @@ class Video:
 
     def check_dimension(self):
         if os.path.getsize(self.file_name) > 50 * 1024 * 1023:# big than 50mb
-            os.system('split -b 49M {0} {1}'.format(self.file_name, self.file_name))
+            os.system('split -b 49M "{0}" "{1}"'.format(self.file_name, self.file_name))
             #os.system() run real command in your machine
 
             os.remove(self.file_name)#remove orignal file

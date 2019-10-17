@@ -1,6 +1,6 @@
 import re
 import os
-from glob import glob, escape
+import glob
 from subprocess import Popen, PIPE
 from time import strftime, strptime, sleep
 from contextlib import contextmanager
@@ -77,7 +77,7 @@ class Video:
             #os.system() run real command in your machine
 
             os.remove(self.file_name)#remove orignal file
-        return glob.escape(self.file_name + '*')# return files match in glob.escape('') without special character
+        return glob.glob(self.file_name + '*')# return files match in glob.glob('')
 
     @contextmanager #run this function with new defined send function
     def send(self):

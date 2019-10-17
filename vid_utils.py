@@ -86,6 +86,7 @@ class Video:
             files = glob.glob(self.real_file_name + '*')
             for file in files:
                 file = file.replace(' ','\ ')
+                file = file.replace('!','\!')
                 cmd = 'mv ' + file + ' ' + file + extension
                 os.system(cmd)
 

@@ -27,7 +27,7 @@ def get_format(update, context):
 
 def download_choosen_format(update, context):
     query = update.callback_query
-    resolution_code, link = query.data.split(' ', 1)
+    resolution_code, link = query.data.split(' ', 1)#setting the max parameter to 1, will return a list with 2 elements!
     
     context.bot.edit_message_text(text="Downloading...",
                           chat_id=query.message.chat_id,
@@ -38,11 +38,11 @@ def download_choosen_format(update, context):
     
     with video.send() as files:
         for f in files:
-            context.bot.send_document(chat_id=query.message.chat_id, document=open(f, 'rb'))
+            context.bot.send_document(chat_id=query.message.chat_id, document=open(f, 'rb'))#open with binary file and send data
 
 
 dispatcher.add_handler(MessageHandler(Filters.text, get_format))
-dispatcher.add_handler(CallbackQueryHandler(download_choosen_format))
+dispatcher.add_handler(CallbackQueryHandler(download_choosen_format))# call back query
 
 updater.start_polling()
 updater.idle()

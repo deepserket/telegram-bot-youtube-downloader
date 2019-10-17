@@ -1,0 +1,24 @@
+[youtube] rSpx2s39Avs: Downloading webpage
+[youtube] rSpx2s39Avs: Downloading video info webpage
+[info] Available formats for rSpx2s39Avs:
+format code  extension  resolution note
+249          webm       audio only tiny   67k , opus @ 50k (48000Hz), 455.16KiB
+250          webm       audio only tiny   89k , opus @ 70k (48000Hz), 596.58KiB
+140          m4a        audio only tiny  135k , m4a_dash container, mp4a.40.2@128k (44100Hz), 932.78KiB
+251          webm       audio only tiny  173k , opus @160k (48000Hz), 1.13MiB
+160          mp4        256x144    144p   45k , avc1.4d400c, 30fps, video only, 218.75KiB
+133          mp4        426x240    240p   81k , avc1.4d4015, 30fps, video only, 372.85KiB
+278          webm       256x144    144p   82k , webm container, vp9, 30fps, video only, 479.85KiB
+242          webm       426x240    240p  163k , vp9, 30fps, video only, 688.99KiB
+134          mp4        640x360    360p  192k , avc1.4d401e, 30fps, video only, 846.67KiB
+243          webm       640x360    360p  306k , vp9, 30fps, video only, 1.23MiB
+135          mp4        854x480    480p  348k , avc1.4d401f, 30fps, video only, 1.49MiB
+244          webm       854x480    480p  473k , vp9, 30fps, video only, 1.98MiB
+136          mp4        1280x720   720p  599k , avc1.4d401f, 30fps, video only, 2.62MiB
+137          mp4        1920x1080  1080p  956k , avc1.640028, 30fps, video only, 4.28MiB
+247          webm       1280x720   720p  968k , vp9, 30fps, video only, 4.06MiB
+248          webm       1920x1080  1080p 1639k , vp9, 30fps, video only, 7.35MiB
+271          webm       2560x1440  1440p 4186k , vp9, 30fps, video only, 20.43MiB
+43           webm       640x360    360p , vp8.0, vorbis@128k, 3.54MiB
+18           mp4        640x360    360p  381k , avc1.42001E, mp4a.40.2@ 96k (44100Hz), 2.73MiB
+22           mp4        1280x720   720p  493k , avc1.64001F, mp4a.40.2@192k (44100Hz) (best)

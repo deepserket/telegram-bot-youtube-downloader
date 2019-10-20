@@ -80,7 +80,7 @@ class Video:
         self.extension = '.' + self.file_name.split('.')[-1]# last matched
 
         if self.extension == '.m4a':
-            os.system('ffmpeg -i "{0}" -acodec libmp3lame -aq 6 {1}'.format(self.file_name,self.real_file_name + '.mp3'))
+            os.system('ffmpeg -i "{0}" -acodec libmp3lame -aq 6 "{1}"'.format(self.file_name, self.real_file_name + '.mp3'))
             os.remove(self.file_name)
             self.file_name = self.real_file_name + '.mp3'
             self.extension = '.mp3'

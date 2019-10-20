@@ -52,8 +52,10 @@ class Video:
             else:
                 format_code, extension, resolution, *_ = line.strip().split()
                 #strip() Remove spaces at the beginning and at the end of the string
-
-                formats.append([format_code, extension, resolution])
+                if extension != 'webm':
+                    if extension == 'm4a':
+                        extension = 'mp3'
+                    formats.append([format_code, extension, resolution])
         return formats
 
     def generate_keyboard(self):

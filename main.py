@@ -36,7 +36,7 @@ def download_choosen_format(update, context):
     if extension == 'mp3':
         video = Video(link, audio_choice_kb=True)
 
-        quality_choice = InlineKeyboardMarkup(video.audio_keyboard_kb)
+        quality_choice = InlineKeyboardMarkup(video.audio_keyboard)
         context.bot.send_message('Choose quality:', reply_markup=quality_choice)
 
         query = update.callback_query

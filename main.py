@@ -37,7 +37,7 @@ def download_choosen_format(update, context):
         video = Video(link, audio_choice_kb=True)
 
         quality_choice = InlineKeyboardMarkup(video.audio_keyboard)
-        context.bot.send_message('Choose quality:', reply_markup=quality_choice)
+        context.bot.send_message(chat_id=update.effective_chat.id, text='Choose quality:', reply_markup=quality_choice)
 
         query = update.callback_query
         quality = query.data

@@ -27,14 +27,26 @@ def get_format(update, context):
 
 def download_choosen_format(update, context):
     query = update.callback_query
-    resolution_code, link = query.data.split(' ', 1)#setting the max parameter to 1, will return a list with 2 elements!
+    resolution_code, extension, link = query.data.split(' ', 2)#setting the max parameter to 2, will return a list with 3 elements!
     
     context.bot.edit_message_text(text="Downloading...",
                           chat_id=query.message.chat_id,
                           message_id=query.message.message_id)
     
-    video = Video(link)
-    video.download(resolution_code)
+    if extension == 'mp3':
+        video = Video(link, audio_choice_kb=True)
+
+        quality_choice = InlineKeyboardMarkup(video.audio_keyboard_kb)
+        context.bot.send_message('Choose quality:', reply_markup=quality_choice)
+
+        query = update.callback_query
+        quality = query.data
+
+        video.download(resolution_code)
+        video.audio_convert(quality=quality)
+    else:
+        video = Video(link)
+        video.download(resolution_code)
     
     with video.send() as files:
         for f in files:

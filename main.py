@@ -5,7 +5,7 @@ from telegram.ext import Updater, CallbackQueryHandler, MessageHandler, Filters
 
 from vid_utils import Video, BadLink
 
-updater = Updater(token='615730838:AAHBAhrZMPLwuUN3yP_6wfwDayLFBgbPYXY', use_context=True)
+updater = Updater(token='YOUR TOKEN', use_context=True)
 
 dispatcher = updater.dispatcher
 

@@ -12,17 +12,15 @@ class BadLink(Exception):
 
 
 class Video:
-    def __init__(self, link, init_keyboard=False, audio_choice_kb=False):
+    def __init__(self, link, init_keyboard=False):
         self.link = link
         self.file_name = None
         self.real_file_name = None
         self.extension = None
-        
+
         if init_keyboard:
             self.formats = self.get_formats()
             self.keyboard = self.generate_keyboard()
-        if audio_choice_kb:
-            self.audio_keyboard = self.audio_quality_choice_kb()
 
     def get_formats(self):
         formats = []
@@ -34,7 +32,7 @@ class Video:
         #communicate() returns a tuple (stdoutdata, stderrdata).
         #communicate() Interact with process: Send data to stdin. Read data from stdout and stderr, until end-of-file is reached. Wait for process to terminate.
 
-        it = iter(str(p[0], 'utf-8').split('\n')) # stdoutdata split with /n in a array to a iterate
+        it = iter(p[0].decode("utf-8", 'ignore').split('\n')) # stdoutdata split with /n in a array to a iterate
         #iter([a,b,c])
 
         try:
@@ -56,7 +54,8 @@ class Video:
                 #strip() Remove spaces at the beginning and at the end of the string
                 if extension != 'webm':
                     if extension == 'm4a':
-                        extension = 'mp3'
+                        extension = 'm4a'
+                        #extension = 'mp3'
                     formats.append([format_code, extension, resolution])
         return formats
 
@@ -66,38 +65,29 @@ class Video:
 
         for code, extension, resolution in self.formats:
             kb.append([InlineKeyboardButton("{0}, {1}".format(extension, resolution),
-                                     callback_data="{0} {1} {2}".format(code, extension, self.link))]) #Data to be sent in a callback query to the bot, will trige CallbackQueryHandler in main.py
+                                     callback_data="{0} {1}".format(code, self.link))]) #Data to be sent in a callback query to the bot, will trige CallbackQueryHandler in main.py
         return kb
-
-    def audio_quality_choice_kb(self):
-        kb = []
-        choice = {'best':1, 'medium':4, 'low':7}
-        for quality in choice:
-            kb.append([InlineKeyboardButton("{}".format(quality),
-                                     callback_data="{}".format(choice.get(quality)))]) #Data to be sent in a callback query to the bot, will trige CallbackQueryHandler in main.py
-        return kb
-
-    def audio_convert(self, quality=4):
-        if self.extension == '.m4a':
-            os.system('ffmpeg -i "{0}" -acodec libmp3lame -aq "{1}" "{2}"'.format(self.file_name, quality, self.real_file_name + '.mp3'))
-            os.remove(self.file_name)
-            self.file_name = self.real_file_name + '.mp3'
-            self.extension = '.mp3'
 
     def download(self, resolution_code):
         cmd = "youtube-dl -f {0} {1}".format(resolution_code, self.link)# download video command
         p = Popen(cmd, shell=True, stdout=PIPE, stderr=PIPE).communicate()
 
-        for line in str(p[0], 'utf-8').split('\n'):
+        for line in p[0].decode("utf-8", 'ignore').split('\n'):
             if "[download] Destination:" in line:
                 self.file_name = line[24:] # name of the file
             elif "has already been downloaded" in line:
                 self.file_name = line[11:-28]
 
+    def check_dimension(self):
         self.real_file_name = self.file_name.split('.')[0]
         self.extension = '.' + self.file_name.split('.')[-1]# last matched
-
-    def check_dimension(self):
+        '''
+        if self.extension == '.m4a':
+            os.system('ffmpeg -i "{0}" -acodec libmp3lame -aq 6 "{1}"'.format(self.file_name, self.real_file_name + '.mp3'))
+            os.remove(self.file_name)
+            self.file_name = self.real_file_name + '.mp3'
+            self.extension = '.mp3'
+        '''
         if os.path.getsize(self.file_name) > 50 * 1024 * 1023:# big than 50mb
             os.system('split -b 49M "{0}" "{1}"'.format(self.file_name, self.real_file_name + '_'))
             #os.system() run real command in your machine

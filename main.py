@@ -48,7 +48,7 @@ def download_choosen_format(update, context):
             video.remove()
     else:
         file_link = video.send(send_type)
-        context.bot.send_message(chat_id=update.effective_chat.id, text=file_link)
+        context.bot.send_message(chat_id=update.effective_chat.id, text='file_link')
 
 dispatcher.add_handler(MessageHandler(Filters.text, get_format))
 dispatcher.add_handler(CallbackQueryHandler(download_choosen_format))# call back query

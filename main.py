@@ -47,7 +47,8 @@ def download_choosen_format(update, context):
             context.bot.send_message(chat_id=update.effective_chat.id, text="Finished")
             video.remove()
     else:
-        file_link = video.send(send_type)
+        video.send(send_type)
+        print(video.file_link)
         context.bot.send_message(chat_id=update.effective_chat.id, text='file_link')
 
 dispatcher.add_handler(MessageHandler(Filters.text, get_format))

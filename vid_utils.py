@@ -17,6 +17,7 @@ class Video:
         self.file_name = None
         self.real_file_name = None
         self.extension = None
+        self.file_link = None
 
         if init_keyboard:
             self.formats = self.get_formats()
@@ -111,12 +112,13 @@ class Video:
 
     @contextmanager #run this function with new defined send function
     def send(self, send_type):
-        if send_type == "file":
+        if send_type == 'file':
             files = self.check_dimension() # split if size >= 50MB
             yield files
         else:
             os.system('mv "{0}" /home/www/cloud/temp/'.format(self.file_name))
-            return 'https://niekun.net/cloud/temp/{}'.format(self.file_name)
+            self.file_link = 'https://niekun.net/cloud/temp/{}'.format(self.file_name)
+            return self.file_link
 
 
     def remove(self):

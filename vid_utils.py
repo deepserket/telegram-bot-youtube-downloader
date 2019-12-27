@@ -80,6 +80,10 @@ class Video:
             elif "has already been downloaded" in line:
                 self.file_name = line[11:-28]
 
+        new_fn = self.file_name.replace(' ', '_').replace('[', '_').replace(']', '_')
+        os.system('mv {0} {1}'.format(self.file_name, new_fn))
+        self.file_name = new_fn
+
     def check_dimension(self):
         self.real_file_name = self.file_name.split('.')[0]
         self.extension = '.' + self.file_name.split('.')[-1]# last matched
@@ -113,7 +117,7 @@ class Video:
         else:
             os.system('mv {0} /home/www/cloud/temp/'.format(self.file_name))
             return 'https://niekun.net/cloud/temp/{}'.format(self.file_name)
-            
+
 
     def remove(self):
         files = glob.glob(self.real_file_name + '*')

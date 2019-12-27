@@ -27,7 +27,7 @@ def get_format(update, context):
 
 def download_choosen_format(update, context):
     query = update.callback_query
-    resolution_code, link = query.data.split(' ', 1)#setting the max parameter to 1, will return a list with 2 elements!
+    resolution_code, link, send_type = query.data.split(' ', 2)#setting the max parameter to 1, will return a list with 2 elements!
 
     context.bot.edit_message_text(text="Downloading...",
                           chat_id=query.message.chat_id,
@@ -36,15 +36,18 @@ def download_choosen_format(update, context):
     video = Video(link)
     video.download(resolution_code)
 
-    with video.send() as files:
-        for f in files:
-            try:
-                context.bot.send_document(chat_id=query.message.chat_id, document=open(f, 'rb'))#open with binary file and send data
-            except TimeoutError :
-                context.bot.send_message(chat_id=update.effective_chat.id, text="Tansfer timeout, place try again later")
-                video.remove()
-        context.bot.send_message(chat_id=update.effective_chat.id, text="Finished")
-        video.remove()
+    with video.send(send_type) as files:
+        if send_type == 'file':
+            for f in files:
+                try:
+                    context.bot.send_document(chat_id=query.message.chat_id, document=open(f, 'rb'))#open with binary file and send data
+                except TimeoutError :
+                    context.bot.send_message(chat_id=update.effective_chat.id, text="Tansfer timeout, place try again later")
+                    video.remove()
+            context.bot.send_message(chat_id=update.effective_chat.id, text="Finished")
+            video.remove()
+        else:
+            context.bot.send_message(chat_id=update.effective_chat.id, text=files)
 
 dispatcher.add_handler(MessageHandler(Filters.text, get_format))
 dispatcher.add_handler(CallbackQueryHandler(download_choosen_format))# call back query

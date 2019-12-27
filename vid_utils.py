@@ -64,8 +64,10 @@ class Video:
         kb = []
 
         for code, extension, resolution in self.formats:
-            kb.append([InlineKeyboardButton("{0}, {1}".format(extension, resolution),
-                                     callback_data="{0} {1}".format(code, self.link))]) #Data to be sent in a callback query to the bot, will trige CallbackQueryHandler in main.py
+            kb.append([InlineKeyboardButton("{0}, {1}, file".format(extension, resolution),
+                                     callback_data="{0} {1} file".format(code, self.link))]) #Data to be sent in a callback query to the bot, will trige CallbackQueryHandler in main.py
+            kb.append([InlineKeyboardButton("{0}, {1}, link".format(extension, resolution),
+                                     callback_data="{0} {1} link".format(code, self.link))]) #Data to be sent in a callback query to the bot, will trige CallbackQueryHandler in main.py
         return kb
 
     def download(self, resolution_code):
@@ -104,9 +106,14 @@ class Video:
         return glob.glob(self.real_file_name + '*')# return files match in glob.glob('')
 
     @contextmanager #run this function with new defined send function
-    def send(self):
-        files = self.check_dimension() # split if size >= 50MB
-        yield files
+    def send(self, send_type):
+        if send_type == "file":
+            files = self.check_dimension() # split if size >= 50MB
+            yield files
+        else:
+            os.system('mv {0} /home/www/cloud/temp/'.format(self.file_name))
+            return 'https://niekun.net/cloud/temp/{}'.format(self.file_name)
+            
 
     def remove(self):
         files = glob.glob(self.real_file_name + '*')

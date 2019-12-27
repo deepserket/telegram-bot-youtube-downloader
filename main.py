@@ -37,7 +37,7 @@ def download_choosen_format(update, context):
     video.download(resolution_code)
 
     if send_type == 'file':
-        with video.send(send_type) as files:
+        with video.send_file() as files:
             for f in files:
                 try:
                     context.bot.send_document(chat_id=query.message.chat_id, document=open(f, 'rb'))#open with binary file and send data
@@ -47,9 +47,8 @@ def download_choosen_format(update, context):
             context.bot.send_message(chat_id=update.effective_chat.id, text="Finished")
             video.remove()
     else:
-        video.send(send_type)
-        print(video.file_link)
-        context.bot.send_message(chat_id=update.effective_chat.id, text=video.file_link)
+        file_link = video.send_link()
+        context.bot.send_message(chat_id=update.effective_chat.id, text=file_link)
 
 dispatcher.add_handler(MessageHandler(Filters.text, get_format))
 dispatcher.add_handler(CallbackQueryHandler(download_choosen_format))# call back query

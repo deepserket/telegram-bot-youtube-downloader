@@ -81,7 +81,7 @@ class Video:
                 self.file_name = line[11:-28]
 
         new_fn = self.file_name.replace(' ', '_').replace('[', '_').replace(']', '_')
-        os.system('mv {0} {1}'.format(self.file_name, new_fn))
+        os.system('mv "{0}" "{1}"'.format(self.file_name, new_fn))
         self.file_name = new_fn
 
     def check_dimension(self):
@@ -115,7 +115,7 @@ class Video:
             files = self.check_dimension() # split if size >= 50MB
             yield files
         else:
-            os.system('mv {0} /home/www/cloud/temp/'.format(self.file_name))
+            os.system('mv "{0}" /home/www/cloud/temp/'.format(self.file_name))
             return 'https://niekun.net/cloud/temp/{}'.format(self.file_name)
 
 

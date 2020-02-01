@@ -37,15 +37,17 @@ class Video:
         it = iter(p[0].decode("utf-8", 'ignore').split('\n')) # stdoutdata split with /n in a array to a iterate
         #iter([a,b,c])
 
-        try:
-            while "Available formats for" not in next(it): pass
-        except StopIteration:
-            raise BadLink
-        else:
-            self.serialNumber = it[29:-1]
+        while true:
+            line = next(it)
+            if "Available formats for" not in line:
+                continue
+            else:
+                self.serialNumber = line[29:-1]
 
-            if 'pornhub.com' in self.link:
-                self.link = 'pornhub:' + self.serialNumber
+                if 'pornhub.com' in self.link:
+                    self.link = 'pornhub:' + self.serialNumber
+
+                break
 
         try:
             while "code  extension" not in next(it): pass #if has not this string then goto next line
@@ -85,7 +87,7 @@ class Video:
     def download(self, resolution_code):
         if 'pornhub' in self.link:
             self.link = 'https://www.pornhub.com/view_video.php?viewkey=' + self.link.split(':')[1]
-            
+
         cmd = "youtube-dl -f {0} {1}".format(resolution_code, self.link)# download video command
         p = Popen(cmd, shell=True, stdout=PIPE, stderr=PIPE).communicate()
 

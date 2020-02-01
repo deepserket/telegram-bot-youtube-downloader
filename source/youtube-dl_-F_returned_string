@@ -22,3 +22,14 @@ format code  extension  resolution note
 43           webm       640x360    360p , vp8.0, vorbis@128k, 3.54MiB
 18           mp4        640x360    360p  381k , avc1.42001E, mp4a.40.2@ 96k (44100Hz), 2.73MiB
 22           mp4        1280x720   720p  493k , avc1.64001F, mp4a.40.2@192k (44100Hz) (best)
+
+***********************************************************************************
+
+pronhub:
+format code  extension  resolution note
+hls-290-0    mp4        426x240     290k , avc1.640015, 29.97fps, mp4a.40.2
+hls-290-1    mp4        426x240     290k , avc1.640015, 29.97fps, mp4a.40.2
+240p         mp4        240p        400k
+hls-470      mp4        852x480     470k , avc1.64001f, 29.97fps, mp4a.40.2
+480p         mp4        480p        600k
+hls-780      mp4        852x480     780k , avc1.64001f, 29.97fps, mp4a.40.2 (best)

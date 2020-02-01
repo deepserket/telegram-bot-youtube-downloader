@@ -47,8 +47,6 @@ class Video:
                     raise StopIteration # Usually the last line is empty
                 if "video only" in line:
                     continue # I don't need video without audio
-                if "-" in line:
-                    continue
             except StopIteration:
                 break
             else:
@@ -59,6 +57,10 @@ class Video:
                         extension = 'm4a'
                         #extension = 'mp3'
                     formats.append([format_code, extension, resolution])
+
+        if "pornhub.com" in self.link:
+            formats = ['480p', 'mp4', '480p']
+
         return formats
 
     def generate_keyboard(self):

@@ -37,8 +37,7 @@ class Video:
         it = iter(p[0].decode("utf-8", 'ignore').split('\n')) # stdoutdata split with /n in a array to a iterate
         #iter([a,b,c])
 
-        while it:
-            line = next(it)
+        for line in it:
             if "Available formats for" in line:
                 self.serialNumber = line[29:-1]
                 if 'pornhub.com' in self.link:

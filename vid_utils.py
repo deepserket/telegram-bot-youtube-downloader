@@ -59,7 +59,7 @@ class Video:
                     formats.append([format_code, extension, resolution])
 
         if "pornhub.com" in self.link:
-            formats = ['480p', 'mp4', '480p']
+            formats = [['480p', 'mp4', '480p']]
 
         return formats
 

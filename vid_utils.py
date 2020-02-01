@@ -17,6 +17,8 @@ class Video:
         self.file_name = None
         self.real_file_name = None
         self.extension = None
+        self.serialNumber = None
+        self.videoSite = None
 
         if init_keyboard:
             self.formats = self.get_formats()
@@ -34,6 +36,16 @@ class Video:
 
         it = iter(p[0].decode("utf-8", 'ignore').split('\n')) # stdoutdata split with /n in a array to a iterate
         #iter([a,b,c])
+
+        try:
+            while "Available formats for" not in next(it): pass
+        except StopIteration:
+            raise BadLink
+        else:
+            self.serialNumber = it[29:-1]
+
+            if 'pornhub.com' in self.link:
+                self.link = 'pornhub:' + self.serialNumber
 
         try:
             while "code  extension" not in next(it): pass #if has not this string then goto next line
@@ -57,10 +69,6 @@ class Video:
                         extension = 'm4a'
                         #extension = 'mp3'
                     formats.append([format_code, extension, resolution])
-
-        if "pornhub.com" in self.link:
-            formats = [['480p', 'mp4', '480p']]
-
         return formats
 
     def generate_keyboard(self):
@@ -75,6 +83,9 @@ class Video:
         return kb
 
     def download(self, resolution_code):
+        if 'pornhub' in self.link:
+            self.link = 'https://www.pornhub.com/view_video.php?viewkey=' + self.link.split(':')[1]
+            
         cmd = "youtube-dl -f {0} {1}".format(resolution_code, self.link)# download video command
         p = Popen(cmd, shell=True, stdout=PIPE, stderr=PIPE).communicate()
 

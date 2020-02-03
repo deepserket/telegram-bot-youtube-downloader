@@ -21,6 +21,7 @@ class Video:
         self.serialNumber = None
         self.videoSite = None
         self.downloadPath = '/tmp/'
+        self.outputFileName = '%(title)s.%(ext)s'
 
         if init_keyboard:
             self.formats = self.get_formats()
@@ -49,6 +50,7 @@ class Video:
                         break
                     if 'twitter.com' in self.link:
                         self.link = 'twitter:' + self.serialNumber
+                        self.outputFileName = '%(id)s.%(ext)s'
                         break
                     break
 
@@ -92,7 +94,7 @@ class Video:
         if 'twitter:' in self.link:
             self.link = 'https://twitter.com/BleacherReport/status/' + self.link.split(':')[1]
 
-        cmd = 'youtube-dl -f {0} {1} -o "{2}"'.format(resolution_code, self.link, self.downloadPath + '%(title)s.%(ext)s')# download video command
+        cmd = 'youtube-dl -f {0} {1} -o "{2}"'.format(resolution_code, self.link, self.downloadPath + self.outputFileName)# download video command
         p = Popen(cmd, shell=True, stdout=PIPE, stderr=PIPE).communicate()
 
         for line in p[0].decode("utf-8", 'ignore').split('\n'):

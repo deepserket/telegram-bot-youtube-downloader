@@ -15,10 +15,12 @@ class Video:
     def __init__(self, link, init_keyboard=False):
         self.link = link
         self.file_name = None
+        self.file_path = None
         self.real_file_name = None
         self.extension = None
         self.serialNumber = None
         self.videoSite = None
+        self.downloadPath = '/tmp/'
 
         if init_keyboard:
             self.formats = self.get_formats()
@@ -37,17 +39,21 @@ class Video:
         it = iter(p[0].decode("utf-8", 'ignore').split('\n')) # stdoutdata split with /n in a array to a iterate
         #iter([a,b,c])
 
-        for line in it:
-            if "Available formats for" in line:
-                self.serialNumber = line[29:-1]
-                if 'pornhub.com' in self.link:
-                    self.link = 'pornhub:' + self.serialNumber
-                break
-
         try:
-            while "code  extension" not in next(it): pass #if has not this string then goto next line
+            for line in it:
+                if "Available formats for" in line:
+                    self.serialNumber = line[29:-1]
+
+                    if 'pornhub.com' in self.link:
+                        self.link = 'pornhub:' + self.serialNumber
+                    break
+                    if 'twitter.com' in self.link:
+                        self.link = 'twitter:' + self.serialNumber
+                    break
+
+            while "format code  extension" not in next(it): pass #if has not this string then goto next line
         except StopIteration:
-            raise BadLink # Isn't a valid youtube link
+            raise BadLink # Isn't a valid link
 
         while True:
             try:
@@ -80,21 +86,27 @@ class Video:
         return kb
 
     def download(self, resolution_code):
-        if 'pornhub' in self.link:
+        if 'pornhub:' in self.link:
             self.link = 'https://www.pornhub.com/view_video.php?viewkey=' + self.link.split(':')[1]
+        if 'twitter:' in self.link:
+            self.link = 'https://twitter.com/BleacherReport/status/' + self.link.split(':')[1]
 
-        cmd = "youtube-dl -f {0} {1}".format(resolution_code, self.link)# download video command
+        cmd = 'youtube-dl -f {0} {1} -o "{2}"'.format(resolution_code, self.link, self.downloadPath + '%(title)s.%(ext)s')# download video command
         p = Popen(cmd, shell=True, stdout=PIPE, stderr=PIPE).communicate()
 
         for line in p[0].decode("utf-8", 'ignore').split('\n'):
             if "[download] Destination:" in line:
-                self.file_name = line[24:] # name of the file
+                self.file_path = line[24:]
+                self.file_name = file_path.split('/')[-1] # name of the file
             elif "has already been downloaded" in line:
-                self.file_name = line[11:-28]
+                self.file_path = line[11:-28]
+                self.file_name = file_path.split('/')[-1]
 
         new_fn = self.file_name.replace(' ', '_').replace('[', '_').replace(']', '_')
-        os.system('mv "{0}" "{1}"'.format(self.file_name, new_fn))
+        new_fp = self.downloadPath + new_fn
+        os.system('mv "{0}" "{1}"'.format(self.file_path, new_fp))
         self.file_name = new_fn
+        self.file_path = new_fp
 
     def check_dimension(self):
         self.real_file_name = self.file_name.split('.')[0]
@@ -106,9 +118,9 @@ class Video:
             self.file_name = self.real_file_name + '.mp3'
             self.extension = '.mp3'
         '''
-        if os.path.getsize(self.file_name) > 50 * 1024 * 1023:# big than 50mb
-            os.system('ffmpeg -i {} -fs 49M -c copy {}'.format(self.file_name, self.real_file_name + '_ffmpeg' + self.extension))
-            os.remove(self.file_name)#remove orignal file
+        if os.path.getsize(self.file_path) > 50 * 1024 * 1023:# big than 50mb
+            os.system('ffmpeg -i {} -fs 49M -c copy {}'.format(self.file_path, self.downloadPath + self.real_file_name + '_ffmpeg' + self.extension))
+            os.remove(self.file_path)#remove orignal file
             
             #os.system('split -b 49M "{0}" "{1}"'.format(self.file_name, self.real_file_name + '_'))
             #os.system() run real command in your machine
@@ -122,7 +134,7 @@ class Video:
             #    cmd = 'mv ' + nfile + ' ' + nfile_ext
             #    os.system(cmd)
 
-        return glob.glob(self.real_file_name + '*')# return files match in glob.glob('')
+        return glob.glob(self.downloadPath + self.real_file_name + '*')# return files match in glob.glob('')
 
     @contextmanager #run this function with new defined send function
     def send_file(self):
@@ -130,11 +142,11 @@ class Video:
         yield files
 
     def send_link(self):
-        os.system('mv "{0}" /home/www/cloud/temp/'.format(self.file_name))
+        os.system('mv "{0}" /home/www/cloud/temp/'.format(self.file_path))
         file_link = 'https://niekun.net/cloud/temp/{}'.format(self.file_name)
         return file_link
 
     def remove(self):
-        files = glob.glob(self.real_file_name + '*')
+        files = glob.glob(self.downloadPath + self.real_file_name + '*')
         for f in files: #removing old files
             os.remove(f)

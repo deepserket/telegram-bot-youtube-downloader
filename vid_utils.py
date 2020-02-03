@@ -46,10 +46,10 @@ class Video:
 
                     if 'pornhub.com' in self.link:
                         self.link = 'pornhub:' + self.serialNumber
-                    break
+                        break
                     if 'twitter.com' in self.link:
                         self.link = 'twitter:' + self.serialNumber
-                    break
+                        break
 
             while "format code  extension" not in next(it): pass #if has not this string then goto next line
         except StopIteration:

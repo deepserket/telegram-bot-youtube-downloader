@@ -50,7 +50,6 @@ class Video:
                         break
                     if 'twitter.com' in self.link:
                         self.link = 'twitter:' + self.serialNumber
-                        self.outputFileName = '%(id)s.%(ext)s'
                         break
                     break
 
@@ -93,7 +92,8 @@ class Video:
             self.link = 'https://www.pornhub.com/view_video.php?viewkey=' + self.link.split(':')[1]
         if 'twitter:' in self.link:
             self.link = 'https://twitter.com/BleacherReport/status/' + self.link.split(':')[1]
-
+            self.outputFileName = '%(id)s.%(ext)s'
+            
         cmd = 'youtube-dl -f {0} {1} -o "{2}"'.format(resolution_code, self.link, self.downloadPath + self.outputFileName)# download video command
         p = Popen(cmd, shell=True, stdout=PIPE, stderr=PIPE).communicate()
 

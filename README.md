@@ -1,5 +1,7 @@
 # telegram-bot-youtube-downloader
 
+### This bot is old and not efficient, this repository will be archived.
+
 Change TOKEN with your token 
 
 Usage:
